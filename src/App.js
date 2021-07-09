@@ -1,6 +1,7 @@
 import "../src/index.sass";
 import React from "react";
+import Main from "./components/main/Main";
 
 export default function App() {
-  return <h1>Interia</h1>;
+  return <Main />;
 }
