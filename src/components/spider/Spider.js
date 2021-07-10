@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import * as R from 'ramda';
 import "./spider.sass";
 
 export default function Spider({spider, moveSpider, leaveSpider}) {
 
   const [mouseDown, setMouseDown] = useState(false);
 
+  const defaultStyle = R.defaultTo(0);
+
   return (
     <div
       className="spider"
-      style={{left: spider.x - 50, top: spider.y - 50}}
+      style={{left: defaultStyle(spider.x - 50), top: defaultStyle(spider.y - 50)}}
       onMouseDown={()=>setMouseDown(true)}
       onMouseUp={()=>{
         setMouseDown(false);

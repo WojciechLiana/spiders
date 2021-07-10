@@ -1,4 +1,5 @@
 import React from "react";
+import * as R from 'ramda';
 import "./spiderWeb.sass";
 
 export default function SpiderWeb({spider1, spider2, isIntersected}) {
