@@ -15,7 +15,7 @@ export default function Spider({spider, moveSpider}) {
       onTouchEnd={()=>setMouseDown(false)}
       onMouseMove={e => mouseDown ? moveSpider({x: e.clientX, y: e.clientY, spiderNumber: spider.spiderNumber}) : null}
       onTouchMove={e => mouseDown ? moveSpider({x: e.touches[0].clientX, y: e.touches[0].clientY, spiderNumber: spider.spiderNumber}) : null}
-    >
+    >{spider.spiderNumber}
     </div>
   );
 }
