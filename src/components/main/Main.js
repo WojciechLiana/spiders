@@ -3,8 +3,8 @@ import "./main.sass";
 import Spider from "../spider/Spider";
 import SpiderWeb from "../spiderWeb/SpiderWeb";
 import { moveSpiders } from "../../utils/moveSpiders";
-import { areLinesIntersected } from "../../utils/areLinesIntersected";
 import { getRandomPosition } from "../../utils/getRandomPosition";
+import { calculateIntersections } from "../../utils/calculateIntersections";
 
 class Main extends React.Component {
 
@@ -24,46 +24,38 @@ class Main extends React.Component {
       line1435: {isIntersected: false},
       line1523: {isIntersected: false},
       line2345: {isIntersected: false},
+      gameWon: false
     };
   }
 
-  calculateIntersections = () => {
-    this.setState({
-      line1325: {
-        isIntersected: areLinesIntersected(
-          this.state.spider1.x, this.state.spider1.y, this.state.spider3.x, this.state.spider3.y,
-          this.state.spider2.x, this.state.spider2.y, this.state.spider5.x, this.state.spider5.y)
-      },line1345: {
-        isIntersected: areLinesIntersected(
-          this.state.spider1.x, this.state.spider1.y, this.state.spider3.x, this.state.spider3.y,
-          this.state.spider4.x, this.state.spider4.y, this.state.spider5.x, this.state.spider5.y)
-      },line1423: {
-        isIntersected: areLinesIntersected(
-          this.state.spider1.x, this.state.spider1.y, this.state.spider4.x, this.state.spider4.y,
-          this.state.spider2.x, this.state.spider2.y, this.state.spider3.x, this.state.spider3.y)
-      },line1425: {
-        isIntersected: areLinesIntersected(
-          this.state.spider1.x, this.state.spider1.y, this.state.spider4.x, this.state.spider4.y,
-          this.state.spider2.x, this.state.spider2.y, this.state.spider5.x, this.state.spider5.y)
-      },line1435: {
-        isIntersected: areLinesIntersected(
-          this.state.spider1.x, this.state.spider1.y, this.state.spider4.x, this.state.spider4.y,
-          this.state.spider3.x, this.state.spider3.y, this.state.spider5.x, this.state.spider5.y)
-      },line1523: {
-        isIntersected: areLinesIntersected(
-          this.state.spider1.x, this.state.spider1.y, this.state.spider5.x, this.state.spider5.y,
-          this.state.spider2.x, this.state.spider2.y, this.state.spider3.x, this.state.spider3.y)
-      },line2345: {
-        isIntersected: areLinesIntersected(
-          this.state.spider2.x, this.state.spider2.y, this.state.spider3.x, this.state.spider3.y,
-          this.state.spider4.x, this.state.spider4.y, this.state.spider5.x, this.state.spider5.y)
-      }
-    })
+  setNewSpidersPosition = () => {
+    const newPositions = {
+      spider1: {...getRandomPosition(), spiderNumber: 1},
+      spider2: {...getRandomPosition(), spiderNumber: 2},
+      spider3: {...getRandomPosition(), spiderNumber: 3},
+      spider4: {...getRandomPosition(), spiderNumber: 4},
+      spider5: {...getRandomPosition(), spiderNumber: 5},
+    }
+
+    const intersections = calculateIntersections(newPositions.spider1, newPositions.spider2, newPositions.spider3, newPositions.spider4, newPositions.spider5);
+
+    this.setState({...newPositions, ...intersections, gameWon: false, level: this.state.level + 1})
+  }
+
+  isGameWon = (state) => {
+    return state.line1325.isIntersected || state.line1345.isIntersected || state.line1423.isIntersected ||
+      state.line1425.isIntersected || state.line1435.isIntersected || state.line1523.isIntersected || state.line2345.isIntersected;
+  }
+
+  onSpiderLeave = () => {
+    const intersections = calculateIntersections(this.state.spider1, this.state.spider2, this.state.spider3, this.state.spider4, this.state.spider5);
+    this.setState({...intersections, gameWon: !this.isGameWon(intersections)});
   }
 
   componentDidMount() {
     moveSpiders();
-    this.calculateIntersections();
+    const intersections = calculateIntersections(this.state.spider1, this.state.spider2, this.state.spider3, this.state.spider4, this.state.spider5);
+    this.setState({...intersections, gameWon: !this.isGameWon(intersections)});
   }
 
   render() {
@@ -73,12 +65,18 @@ class Main extends React.Component {
           <span>Time: 00:00</span>
           <span>Level: {this.state.level}</span>
         </nav>
+        {
+        this.state.gameWon ?
+        <div><button onClick={this.setNewSpidersPosition}>
+          Next Level
+          </button>
+        </div>:
         <div className="board">
-          <Spider spider={this.state.spider1} moveSpider={spiderState => this.setState({spider1: spiderState})} leaveSpider={this.calculateIntersections}/>
-          <Spider spider={this.state.spider2} moveSpider={spiderState => this.setState({spider2: spiderState})} leaveSpider={this.calculateIntersections}/>
-          <Spider spider={this.state.spider3} moveSpider={spiderState => this.setState({spider3: spiderState})} leaveSpider={this.calculateIntersections}/>
-          <Spider spider={this.state.spider4} moveSpider={spiderState => this.setState({spider4: spiderState})} leaveSpider={this.calculateIntersections}/>
-          <Spider spider={this.state.spider5} moveSpider={spiderState => this.setState({spider5: spiderState})} leaveSpider={this.calculateIntersections}/>
+          <Spider spider={this.state.spider1} moveSpider={spiderState => this.setState({spider1: spiderState})} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider2} moveSpider={spiderState => this.setState({spider2: spiderState})} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider3} moveSpider={spiderState => this.setState({spider3: spiderState})} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider4} moveSpider={spiderState => this.setState({spider4: spiderState})} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider5} moveSpider={spiderState => this.setState({spider5: spiderState})} leaveSpider={this.onSpiderLeave}/>
           <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider5} 
             isIntersected={this.state.line1523.isIntersected }/>
           <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider3}
@@ -94,7 +92,10 @@ class Main extends React.Component {
           <SpiderWeb spider1={this.state.spider4} spider2={this.state.spider5}
             isIntersected={this.state.line2345.isIntersected || this.state.line1345.isIntersected}/>
         </div>
-        <footer className="footer">Back</footer>
+        }
+        <footer className="footer">
+          <button onClick={()=>this.setState({gameWon: true, level: this.state.level === 1 ? 1: this.state.level - 1})}>Back</button>
+        </footer>
       </div>
     )
   }
