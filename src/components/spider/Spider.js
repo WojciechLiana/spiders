@@ -5,7 +5,6 @@ export default function Spider({spider, moveSpider}) {
 
   const [mouseDown, setMouseDown] = useState(false);
 
-
   return (
     <div
       className="spider"

@@ -1,7 +1,7 @@
 import React from "react";
 import "./spiderWeb.sass";
 
-export default function SpiderWeb({spider1, spider2}) {
+export default function SpiderWeb({spider1, spider2, isIntersected}) {
 
   const s1x = spider1.x;
   const s1y = spider1.y;
@@ -11,16 +11,14 @@ export default function SpiderWeb({spider1, spider2}) {
   const createLineElement = (x, y, length, angle) => {
 
     const styles = {
-      border: "1px solid black",
       width: length + "px",
-      height: "0",
       transform: "rotate(" + angle + "rad)",
       position: "absolute",
       top: y + "px",
       left: x + "px"
     }
     
-    return <div style={styles} />;
+    return <div style={styles} className={ isIntersected ? "spider-web spider-web-intersected" : "spider-web" }/>;
   }
   
   const createLine = (x1, y1, x2, y2) => {

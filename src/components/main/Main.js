@@ -39,7 +39,7 @@ class Main extends React.Component {
           <Spider spider={this.state.spider3} moveSpider={x => this.setState({spider3: x})}/>
           <Spider spider={this.state.spider4} moveSpider={x => this.setState({spider4: x})}/>
           <Spider spider={this.state.spider5} moveSpider={x => this.setState({spider5: x})}/>
-          <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider5} />
+          <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider5} isIntersected={true}/>
           <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider3} />
           <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider4} />
           <SpiderWeb spider1={this.state.spider2} spider2={this.state.spider5} />
