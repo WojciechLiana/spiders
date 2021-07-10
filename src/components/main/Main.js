@@ -4,6 +4,7 @@ import Spider from "../spider/Spider";
 import SpiderWeb from "../spiderWeb/SpiderWeb";
 import { moveSpiders } from "../../utils/moveSpiders";
 import { areLinesIntersected } from "../../utils/areLinesIntersected";
+import { getRandomPosition } from "../../utils/getRandomPosition";
 
 class Main extends React.Component {
 
@@ -11,11 +12,11 @@ class Main extends React.Component {
     super();
     this.state = {
       level: 1,
-      spider1: {x: 200, y: 300, spiderNumber: 1},
-      spider2: {x: 250, y: 450, spiderNumber: 2},
-      spider3: {x: 500, y: 300, spiderNumber: 3},
-      spider4: {x: 600, y: 500, spiderNumber: 4},
-      spider5: {x: 200, y: 600, spiderNumber: 5},
+      spider1: {...getRandomPosition(), spiderNumber: 1},
+      spider2: {...getRandomPosition(), spiderNumber: 2},
+      spider3: {...getRandomPosition(), spiderNumber: 3},
+      spider4: {...getRandomPosition(), spiderNumber: 4},
+      spider5: {...getRandomPosition(), spiderNumber: 5},
       line1325: {isIntersected: false},
       line1345: {isIntersected: false},
       line1423: {isIntersected: false},
@@ -26,12 +27,7 @@ class Main extends React.Component {
     };
   }
 
-  onSpiderMove = (x) => {
-    this.setState({spider1: x})
-  }
-
-  componentDidMount() {
-    moveSpiders();
+  calculateIntersections = () => {
     this.setState({
       line1325: {
         isIntersected: areLinesIntersected(
@@ -53,12 +49,21 @@ class Main extends React.Component {
         isIntersected: areLinesIntersected(
           this.state.spider1.x, this.state.spider1.y, this.state.spider4.x, this.state.spider4.y,
           this.state.spider3.x, this.state.spider3.y, this.state.spider5.x, this.state.spider5.y)
+      },line1523: {
+        isIntersected: areLinesIntersected(
+          this.state.spider1.x, this.state.spider1.y, this.state.spider5.x, this.state.spider5.y,
+          this.state.spider2.x, this.state.spider2.y, this.state.spider3.x, this.state.spider3.y)
       },line2345: {
         isIntersected: areLinesIntersected(
           this.state.spider2.x, this.state.spider2.y, this.state.spider3.x, this.state.spider3.y,
           this.state.spider4.x, this.state.spider4.y, this.state.spider5.x, this.state.spider5.y)
       }
     })
+  }
+
+  componentDidMount() {
+    moveSpiders();
+    this.calculateIntersections();
   }
 
   render() {
@@ -69,11 +74,11 @@ class Main extends React.Component {
           <span>Level: {this.state.level}</span>
         </nav>
         <div className="board">
-          <Spider spider={this.state.spider1} moveSpider={x => this.setState({spider1: x})}/>
-          <Spider spider={this.state.spider2} moveSpider={x => this.setState({spider2: x})}/>
-          <Spider spider={this.state.spider3} moveSpider={x => this.setState({spider3: x})}/>
-          <Spider spider={this.state.spider4} moveSpider={x => this.setState({spider4: x})}/>
-          <Spider spider={this.state.spider5} moveSpider={x => this.setState({spider5: x})}/>
+          <Spider spider={this.state.spider1} moveSpider={spiderState => this.setState({spider1: spiderState})} leaveSpider={this.calculateIntersections}/>
+          <Spider spider={this.state.spider2} moveSpider={spiderState => this.setState({spider2: spiderState})} leaveSpider={this.calculateIntersections}/>
+          <Spider spider={this.state.spider3} moveSpider={spiderState => this.setState({spider3: spiderState})} leaveSpider={this.calculateIntersections}/>
+          <Spider spider={this.state.spider4} moveSpider={spiderState => this.setState({spider4: spiderState})} leaveSpider={this.calculateIntersections}/>
+          <Spider spider={this.state.spider5} moveSpider={spiderState => this.setState({spider5: spiderState})} leaveSpider={this.calculateIntersections}/>
           <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider5} 
             isIntersected={this.state.line1523.isIntersected }/>
           <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider3}
@@ -87,7 +92,7 @@ class Main extends React.Component {
           <SpiderWeb spider1={this.state.spider3} spider2={this.state.spider5}
             isIntersected={this.state.line1435.isIntersected}/>
           <SpiderWeb spider1={this.state.spider4} spider2={this.state.spider5}
-            isIntersected={this.state.line2345.isIntersected}/>
+            isIntersected={this.state.line2345.isIntersected || this.state.line1345.isIntersected}/>
         </div>
         <footer className="footer">Back</footer>
       </div>
