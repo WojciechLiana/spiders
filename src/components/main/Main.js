@@ -4,9 +4,9 @@ import Spider from "../spider/Spider";
 import SpiderWeb from "../spiderWeb/SpiderWeb";
 import { WinWindow } from "../winWindow/WinWindow";
 import { moveSpiders } from "../../utils/moveSpiders";
-import { getRandomPosition } from "../../utils/getRandomPosition";
 import { calculateIntersections } from "../../utils/calculateIntersections";
 import { isGameWon } from "../../utils/isGameWon";
+import { getNewNotWonSetup } from "../../utils/getNewNotWonSetup";
 import * as R from 'ramda';
 
 class Main extends React.Component {
@@ -31,18 +31,10 @@ class Main extends React.Component {
     };
   }
 
-  setNewSpidersPosition = (gameWon) => {
-    const newPositions = {
-      spider1: {...getRandomPosition(), spiderNumber: 1},
-      spider2: {...getRandomPosition(), spiderNumber: 2},
-      spider3: {...getRandomPosition(), spiderNumber: 3},
-      spider4: {...getRandomPosition(), spiderNumber: 4},
-      spider5: {...getRandomPosition(), spiderNumber: 5},
-    }
-
-    const intersections = calculateIntersections(newPositions.spider1, newPositions.spider2, newPositions.spider3, newPositions.spider4, newPositions.spider5);
-
-    const level = {level: gameWon ? this.state.level + 1 : this.state.level}
+  setNewSpidersPosition = (isNextLevel) => {
+    const [intersections, newPositions] = getNewNotWonSetup();
+    
+    const level = {level: isNextLevel ? this.state.level + 1 : this.state.level}
 
     this.setState(R.mergeAll([newPositions, intersections, level, {gameWon: false}]));
   }
@@ -65,7 +57,7 @@ class Main extends React.Component {
   render() {
     return (
       <div className="main">
-        <nav class="navbar">
+        <nav className="navbar">
           <span className="navbar-level">Level: {this.state.level}</span>
         </nav>
         {
