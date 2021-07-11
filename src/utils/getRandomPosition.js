@@ -1,3 +1,3 @@
-export function getRandomPosition() {
-  return {x: Math.floor(Math.random() * (900 - 200) + 200), y: Math.floor(Math.random() * (700 - 200) + 200)};
+export function getRandomPosition(maxWidth, maxHeight) {
+  return {x: Math.floor(Math.random() * (maxWidth - 200) + 100), y: Math.floor(Math.random() * (maxHeight - 200) + 100)};
 }
