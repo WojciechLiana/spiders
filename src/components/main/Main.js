@@ -1,8 +1,8 @@
 import React from "react";
 import "./main.sass";
-import Spider from "../spider/Spider";
-import SpiderWeb from "../spiderWeb/SpiderWeb";
-import { WinWindow } from "../winWindow/WinWindow";
+import {Spider} from "../spider/Spider";
+import {SpiderWeb} from "../spiderWeb/SpiderWeb";
+import WinWindow from "../winWindow/WinWindow";
 import { moveSpiders } from "../../utils/moveSpiders";
 import { calculateIntersections } from "../../utils/calculateIntersections";
 import { isGameWon } from "../../utils/isGameWon";
@@ -30,6 +30,8 @@ class Main extends React.Component {
       gameWon: false
     };
   }
+
+  setSpider = (spiderState) => {this.setState({[`spider${spiderState.spiderNumber}`]: spiderState})}
 
   setNewSpidersPosition = (isNextLevel) => {
     const [intersections, newPositions] = getNewNotWonSetup();
@@ -65,11 +67,11 @@ class Main extends React.Component {
         <WinWindow nextLevelClick={this.setNewSpidersPosition}/>
         :
         <div className="board">
-          <Spider spider={this.state.spider1} moveSpider={spiderState => this.setState({spider1: spiderState})} leaveSpider={this.onSpiderLeave}/>
-          <Spider spider={this.state.spider2} moveSpider={spiderState => this.setState({spider2: spiderState})} leaveSpider={this.onSpiderLeave}/>
-          <Spider spider={this.state.spider3} moveSpider={spiderState => this.setState({spider3: spiderState})} leaveSpider={this.onSpiderLeave}/>
-          <Spider spider={this.state.spider4} moveSpider={spiderState => this.setState({spider4: spiderState})} leaveSpider={this.onSpiderLeave}/>
-          <Spider spider={this.state.spider5} moveSpider={spiderState => this.setState({spider5: spiderState})} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider1} moveSpider={this.setSpider} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider2} moveSpider={this.setSpider} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider3} moveSpider={this.setSpider} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider4} moveSpider={this.setSpider} leaveSpider={this.onSpiderLeave}/>
+          <Spider spider={this.state.spider5} moveSpider={this.setSpider} leaveSpider={this.onSpiderLeave}/>
           <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider5} 
             isIntersected={this.state.line1523.isIntersected }/>
           <SpiderWeb spider1={this.state.spider1} spider2={this.state.spider3}

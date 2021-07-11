@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as R from 'ramda';
 import "./spider.sass";
 
-export default function Spider({spider, moveSpider, leaveSpider}) {
+export const Spider = React.memo(({spider, moveSpider, leaveSpider}) => {
 
   const [mouseDown, setMouseDown] = useState(false);
 
@@ -26,4 +26,4 @@ export default function Spider({spider, moveSpider, leaveSpider}) {
       onTouchMove={e => mouseDown ? moveSpider({x: e.touches[0].clientX, y: e.touches[0].clientY, spiderNumber: spider.spiderNumber}) : null}
     />
   );
-}
+});

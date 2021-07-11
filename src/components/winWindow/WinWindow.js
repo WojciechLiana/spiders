@@ -1,7 +1,7 @@
 import React from "react";
 import "./winWindow.sass";
 
-export function WinWindow({nextLevelClick}) {
+export default function WinWindow({nextLevelClick}) {
 
   return(
     <div className="win-window">

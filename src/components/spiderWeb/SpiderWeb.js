@@ -1,8 +1,7 @@
 import React from "react";
-import * as R from 'ramda';
 import "./spiderWeb.sass";
 
-export default function SpiderWeb({spider1, spider2, isIntersected}) {
+export const SpiderWeb = React.memo(({spider1, spider2, isIntersected}) => {
 
   const s1x = spider1.x;
   const s1y = spider1.y;
@@ -41,4 +40,4 @@ export default function SpiderWeb({spider1, spider2, isIntersected}) {
   return (
     createLine(s1x, s1y, s2x, s2y)
   );
-}
+});
