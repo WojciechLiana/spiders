@@ -89,8 +89,13 @@ class Main extends React.Component {
         <footer className="footer">
           {
             !this.state.gameWon &&
-              <span className="footer-back" onClick={this.onGoBack}>
-                &larr;
+              <span className="footer-container">
+                <span className="footer-back" onClick={this.onGoBack}>
+                &#10174;
+              </span>
+              <span className="footer-save">
+                &#10174;
+              </span>
               </span>
           }
         </footer>
