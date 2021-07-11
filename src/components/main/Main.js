@@ -2,6 +2,7 @@ import React from "react";
 import "./main.sass";
 import Spider from "../spider/Spider";
 import SpiderWeb from "../spiderWeb/SpiderWeb";
+import { WinWindow } from "../winWindow/WinWindow";
 import { moveSpiders } from "../../utils/moveSpiders";
 import { getRandomPosition } from "../../utils/getRandomPosition";
 import { calculateIntersections } from "../../utils/calculateIntersections";
@@ -64,17 +65,13 @@ class Main extends React.Component {
   render() {
     return (
       <div className="main">
-        <nav calss="navbar">
-          <span>Time: 00:00</span>
-          <span>Level: {this.state.level}</span>
+        <nav class="navbar">
+          <span className="navbar-level">Level: {this.state.level}</span>
         </nav>
         {
         this.state.gameWon ?
-        <div>
-          <button onClick={this.setNewSpidersPosition.bind(null, true)}>
-            Next Level
-          </button>
-        </div>:
+        <WinWindow nextLevelClick={this.setNewSpidersPosition}/>
+        :
         <div className="board">
           <Spider spider={this.state.spider1} moveSpider={spiderState => this.setState({spider1: spiderState})} leaveSpider={this.onSpiderLeave}/>
           <Spider spider={this.state.spider2} moveSpider={spiderState => this.setState({spider2: spiderState})} leaveSpider={this.onSpiderLeave}/>
@@ -100,9 +97,9 @@ class Main extends React.Component {
         <footer className="footer">
           {
             !this.state.gameWon &&
-              <button onClick={this.onGoBack}>
-                Back
-              </button>
+              <span className="footer-back" onClick={this.onGoBack}>
+                &larr;
+              </span>
           }
         </footer>
       </div>
