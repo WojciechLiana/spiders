@@ -6,8 +6,7 @@ import { moveSpiders } from "../../utils/moveSpiders";
 import { calculateIntersections } from "../../utils/calculateIntersections";
 import { isGameWon } from "../../utils/isGameWon";
 import { getNewNotWonSetup } from "../../utils/getNewNotWonSetup";
-import * as R from 'ramda';
-
+import * as R from "ramda";
 class Main extends React.Component {
 
   constructor() {
