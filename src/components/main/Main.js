@@ -7,6 +7,7 @@ import { calculateIntersections } from "../../utils/calculateIntersections";
 import { isGameWon } from "../../utils/isGameWon";
 import { getNewNotWonSetup } from "../../utils/getNewNotWonSetup";
 import * as R from "ramda";
+import arrowImg from "../../../assets/arrow.png";
 class Main extends React.Component {
 
   constructor() {
@@ -70,12 +71,8 @@ class Main extends React.Component {
           {
             !this.state.gameWon &&
             <span className="footer-container">
-              <span className="footer-back" onClick={this.onGoBack}>
-                &#10174;
-              </span>
-              <span className="footer-save">
-                &#10174;
-              </span>
+              <img src={arrowImg} alt="arrow" className="footer-back" onClick={this.onGoBack}/>
+              <img src={arrowImg} alt="arrow" className="footer-download" />
             </span>
           }
         </footer>

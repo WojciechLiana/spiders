@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as R from 'ramda';
 import "./spider.sass";
-import spiderImg from "../../../assets/spider.png"
+import spiderImg from "../../../assets/spider.png";
 
 export const Spider = React.memo(({ spider, moveSpider, leaveSpider }) => {
 
@@ -18,7 +18,7 @@ export const Spider = React.memo(({ spider, moveSpider, leaveSpider }) => {
   }
 
   return (
-    <img src={spiderImg} alt="torchlight in the sky"
+    <img src={spiderImg} alt="spiderImg"
       className="spider"
       style={{ left: defaultStyle(spider.x - 50), top: defaultStyle(spider.y - 50) }}
       onMouseDown={onTakeSpiderHandler}
